@@ -37,6 +37,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        viewBinding = true
         compose = true
     }
     composeOptions {
@@ -74,4 +75,5 @@ dependencies {
     implementation (libs.androidx.activity.compose.v161)
     implementation (libs.converter.gson)
     implementation (libs.okhttp)
+    implementation(libs.coil.compose)
 }
