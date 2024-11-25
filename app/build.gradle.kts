@@ -76,4 +76,7 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.okhttp)
     implementation(libs.coil.compose)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    implementation (libs.retrofit)
+    implementation (libs.androidx.ui.v143)
 }

@@ -1,67 +1,83 @@
 package com.example.kotlin_hw2
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-
-
-data class Response(val url: String)
-
+import com.example.kotlin_hw2.ui.theme.Kotlin_hw2Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
-                Surface {
-                    Content()
-                }
+            Kotlin_hw2Theme {
+                ImageGridWithAddButton()
             }
         }
     }
 }
 
 @Composable
-fun Content(imgViewModel: ImgViewModel = viewModel()) {
-    val imgAPI = APIservice.imgAPI
+fun ImageGridWithAddButton() {
+    // Состояние списка изображений
+    var imageList by remember { mutableStateOf(initialImageList.toMutableList()) }
 
-    LaunchedEffect(Unit) {
-        imgViewModel.loadImg(imgAPI)
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        if (imgViewModel.isLoading) {
-            Text("Загрузка изображения...")
-        } else {
-            if (imgViewModel.imgUrl.isNotEmpty()) {
-                Image(
-                    painter = rememberAsyncImagePainter(model = imgViewModel.imgUrl),
-                    contentDescription = "Изображение",
-                    modifier = Modifier.size(200.dp)
-                )
-            } else {
-                Text("Не удалось загрузить изображение.")
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Сетка изображений
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(imageList) { imageRes ->
+                ImageCard(imageRes = imageRes)
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { imgViewModel.loadImg(imgAPI) }) {
-            Text("Показать другое изображение")
+        // FloatingActionButton для добавления нового изображения
+        FloatingActionButton(
+            onClick = {
+                // Добавляем новое изображение в список
+                val newImageRes = R.drawable.ic_launcher_background
+                imageList = (imageList + newImageRes).toMutableList()
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            Text("+") // Кнопка с текстом "+"
         }
     }
 }
+
+@Composable
+fun ImageCard(imageRes: Int) {
+    Box(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .aspectRatio(1f)
+    ) {
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+// Начальный список изображений
+private val initialImageList = listOf(
+    R.drawable.ic_launcher_background,
+    R.drawable.ic_launcher_foreground,
+    R.drawable.ic_launcher_background
+)
