@@ -3,7 +3,6 @@ package com.example.kotlin_hw2.data.remote
 import com.example.kotlin_hw2.BuildConfig
 import com.example.kotlin_hw2.model.UnsplashImage
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface UnsplashApi {

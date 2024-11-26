@@ -98,5 +98,4 @@ dependencies {
     implementation (libs.okhttp)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp.v490)
-    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:0.8.0.")
 }
